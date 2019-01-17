@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+  <!-- 配置mysql 驱动jar包路径.用了绝对路径 -->
+  <classPathEntry location="E:\Users\hyq\Documents\java-workspace\mvn-jars\mysql\mysql-connector-java\5.1.22\mysql-connector-java-5.1.22.jar" />
+
+  <context id="mysql" targetRuntime="MyBatis3">
+
+	<!-- 生成的Java文件的编码 -->
+    <property name="javaFileEncoding" value="UTF-8"/>
+    
+    <!-- 为了防止生成的代码中有很多注释，比较难看，加入下面的配置控制 -->
+    <commentGenerator>
+      <property name="suppressAllComments" value="true" />
+      <property name="suppressDate" value="true" />
+    </commentGenerator>
+    <!-- 注释控制完毕 -->
+
+    
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://127.0.0.1:3581/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"
+        userId="test"
+        password="password">
+    </jdbcConnection>
+	
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <!-- 数据表对应的model 层  -->
+    <javaModelGenerator targetPackage="com.lxy.model" targetProject="src/main/java">
+      <property name="enableSubPackages" value="false" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <!-- sql mapper 隐射配置文件 -->
+    <sqlMapGenerator targetPackage="com.lxy.mapper"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="false" />
+    </sqlMapGenerator>
+
+	<!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口 
+	        targetPackage/targetProject:同javaModelGenerator
+	        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：
+	            1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；
+	            2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；
+	            3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；
+	        注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
+	    -->
+    <!-- 在ibatis2 中是dao层，但在mybatis3中，其实就是mapper接口 -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.lxy.dao.reader"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="false" />
+    </javaClientGenerator>
+
+    <!-- 要对那些数据表进行生成操作 -->
+    <table schema="test" tableName="test_user" domainObjectName="TestUser"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_privilege" domainObjectName="TestPrivilege"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_typesdata" domainObjectName="TestTypesData"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_task" domainObjectName="TestTask"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_task_query" domainObjectName="TestTaskQuery"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_task_query_image" domainObjectName="TestTaskQueryImage"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+    <table schema="test" tableName="test_task_query_score" domainObjectName="TestTaskQueryScore"
+        enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" enableDeleteByPrimaryKey="false"
+        enableSelectByPrimaryKey="false">
+        <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
+        	    比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+        <property name="useActualColumnNames" value="true"/>
+        <ignoreColumn column="bak1" delimitedColumnName=""/>
+        <ignoreColumn column="bak2" delimitedColumnName=""/>
+        <ignoreColumn column="bak3" delimitedColumnName=""/>
+        <ignoreColumn column="bak4" delimitedColumnName=""/>
+        <ignoreColumn column="bak5" delimitedColumnName=""/>
+    </table>
+  </context>
+</generatorConfiguration>

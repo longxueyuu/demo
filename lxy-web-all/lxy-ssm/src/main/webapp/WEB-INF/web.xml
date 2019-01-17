@@ -1,0 +1,82 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+
+  <display-name>lxy-ssm</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!-- FILTER CONFIGURATION BEGIN -->
+  <filter>
+    <filter-name>setCharacterEncoding</filter-name>
+    <filter-class>
+      org.springframework.web.filter.CharacterEncodingFilter
+    </filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>setCharacterEncoding</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- FILTER CONFIGURATION END -->
+
+  <!-- 同一web容器下部署时，Web app root system property需要唯一 -->
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>lxy-ssm.root</param-value>
+  </context-param>
+
+  <!-- SPRING MVC CORE SERVLET CONFIGURATION BEGIN -->
+  <!-- Spring和mybatis的配置文件
+  <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:conf/core/application-context.xml</param-value>
+  </context-param>
+  <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  -->
+  <servlet>
+    <servlet-name>lxy-ssm</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <!--
+     <param-value>classpath:conf/core/mvc-core-config.xml</param-value>
+      -->
+      <param-value>classpath:conf/core/application-context.xml</param-value>
+
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>lxy-ssm</servlet-name>
+    <url-pattern>*.htm</url-pattern>
+  </servlet-mapping>
+  <!-- SPRING MVC CORE SERVLET CONFIGURATION END -->
+
+
+  <!-- Spring 刷新Introspector防止内存泄露 -->
+  <listener>
+    <listener-class>
+      org.springframework.web.util.IntrospectorCleanupListener
+    </listener-class>
+  </listener>
+
+  <!-- 支持session scope的Spring bean -->
+  <listener>
+    <listener-class>
+      org.springframework.web.context.request.RequestContextListener
+    </listener-class>
+  </listener>
+
+</web-app>

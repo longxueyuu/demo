@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <!-- 数据库连接 -->
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxIdle" value="${dbcp.maxIdle}" />
+        <property name="maxActive" value="${dbcp.maxActive}" />
+        <property name="defaultAutoCommit" value="true" />
+        <!--removeAbandoned: 是否自动回收超时连接-->
+        <property name="removeAbandoned" value="true"/>
+        <!--removeAbandonedTimeout: 超时时间(以秒数为单位)-->
+        <property name="removeAbandonedTimeout" value="600"/>
+        <property name="logAbandoned" value="true"/>
+        <property name="validationQuery">
+            <value>SELECT NOW()</value> 
+        </property>
+        <property name="testOnBorrow">
+            <value>true</value> 
+        </property>
+        <property name="timeBetweenEvictionRunsMillis" value="3600000" />
+        <property name="minEvictableIdleTimeMillis" value="3600000" />
+    </bean>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource" />
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+        <qualifier value="lxy-ssm" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+</beans>
