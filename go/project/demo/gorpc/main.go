@@ -6,5 +6,4 @@ func main() {
 
 	server.StartArithService()
 
-	select {}
 }

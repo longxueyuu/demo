@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis"
@@ -193,4 +194,35 @@ func TestSwitch(t *testing.T) {
 	default:
 		fmt.Println("i<30")
 	}
+}
+
+func TestAddressOfStruct(t *testing.T) {
+	p := Person{Name: "trump", Age: 49}
+
+	pp := &p
+
+	pp.Name = "hillary"
+	fmt.Printf("p=%v, pp=%v\n", p, pp)
+}
+
+func TestCompositeLiterals(t *testing.T) {
+	a := [...]string{0: "no error", 2: "Eio", 3: "invalid argument"}
+	s := []string{5: "no error", 7: "Eio", 9: "invalid argument"}
+	m := map[int]string{1: "no error", 2: "Eio", 3: "invalid argument"}
+	fmt.Println(a, len(a), s, len(s), m)
+}
+
+type RW struct {
+	*bufio.Reader
+	*bufio.Writer
+}
+
+func TestStructEmbedding(t *testing.T) {
+	rw := &RW{Reader: nil, Writer: nil}
+	_ = rw
+	// now ReadWriter implemented io.Reader & io.Writer
+	//_, _ = rw.Read([]byte{})
+	//
+	//var i io.Reader = rw
+	//_, _ = i.Read([]byte{})
 }

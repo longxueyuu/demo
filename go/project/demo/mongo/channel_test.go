@@ -8,8 +8,8 @@ import (
 func TestNilChannel(t *testing.T) {
 	var ch chan int
 	fmt.Println(ch)
-	v, ok := <-ch
-	fmt.Println(v, ok)
+	//v, ok := <-ch
+	//fmt.Println(v, ok)
 }
 
 func TestCloseChannel(t *testing.T) {
@@ -29,8 +29,8 @@ func TestForRangeChannel(t *testing.T) {
 	ch<- 2
 
 	fmt.Println("start")
-	for v := range ch {
-		fmt.Println(v)
-	}
+	//for v := range ch {
+	//	fmt.Println(v)
+	//}
 	fmt.Println("end")
 }
