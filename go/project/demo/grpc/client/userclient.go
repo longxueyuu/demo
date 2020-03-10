@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	user "github.com/test/project/demo/grpc/proto"
+	_ "github.com/test/project/demo/grpc/resolvers"
 	"google.golang.org/grpc"
 	"log"
 	"os"
@@ -11,13 +11,11 @@ import (
 )
 
 const (
-	address     = "localhost:50051"
-	defaultName = "user client"
+	address     = "demo://demo_authority/localhost:50051,localhost:50052"
+	defaultName = "user_client"
 )
 
 func main() {
-	fmt.Printf("hello, client\n")
-
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
