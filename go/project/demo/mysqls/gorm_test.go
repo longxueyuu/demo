@@ -1,4 +1,4 @@
-package mysql
+package mysqls
 
 import (
 	"fmt"
@@ -9,20 +9,6 @@ import (
 	"strconv"
 	"testing"
 	"time"
-)
-
-type User struct {
-	ID   int    `gorm:"column:id"`
-	UID  string `gorm:"column:uid"`
-	Name string `gorm:"column:name"`
-
-	CTime int64 `gorm:"column:ctime"`
-	MTime int64 `gorm:"column:mtime"`
-}
-
-const (
-	TableUser                  = "user"
-	MysqlDuplicateKeyErrNumber = 1062
 )
 
 var (

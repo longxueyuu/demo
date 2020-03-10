@@ -4,11 +4,9 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis"
 	"reflect"
 	"strconv"
 	"testing"
-	"time"
 )
 
 type Person struct {
@@ -86,71 +84,6 @@ func TestInterfaceType(t *testing.T) {
 		fmt.Printf("run is not nil: %#v \n", run)
 	}
 
-}
-
-func TestRedis(t *testing.T) {
-	client := redis.NewClient(
-		&redis.Options{
-			Addr:        "localhost:6379",
-			DB:          0,
-			MaxRetries:  2,
-			IdleTimeout: time.Duration(30) * time.Second,
-		})
-
-	err := client.SAdd("name", "li", "zhang").Err()
-	client.SAdd("name", "wang", "zhang").Err()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	m, err := client.SMembersMap("name").Result()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(m)
-
-	err = client.SAdd("emptyset", []string{""}).Err()
-	if err != nil {
-		fmt.Println(err)
-	}
-	// set key: key不存在时，err == nil, list为空
-	list, err := client.SMembers("emptyset").Result()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(list, "len=", len(list))
-
-	// string key: key不存在时，返回Redis.Nil
-	s, err := client.Get("sets").Result()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(s)
-
-	// zset key: key不存在或者member不存在, 返回Redis.Nil
-	rank, err := client.ZRank("zsetkey", "name").Result()
-	if err != nil {
-		fmt.Println("zset key:", err)
-	} else {
-		fmt.Println("zset key:", rank, err)
-	}
-
-	client.ZAdd("zsetkey", redis.Z{Member: "trump", Score: 10})
-	client.ZAdd("zsetkey", redis.Z{Member: "leo", Score: 9})
-	rank, err = client.ZRank("zsetkey", "pelosi").Result()
-	if err != nil {
-		fmt.Println("zset key:", err)
-	} else {
-		fmt.Println("zset key:", rank, err)
-	}
-
-	mems, err := client.ZRevRangeWithScores("zsetkey1", 0, -1).Result()
-	fmt.Println("zrevrange:", mems, err)
-
-	v, err := client.Exists("name").Result()
-	fmt.Println("exists:", v, err)
-	v, err = client.Exists("agename").Result()
-	fmt.Println("exists:", v, err)
 }
 
 func TestGoto(t *testing.T) {
