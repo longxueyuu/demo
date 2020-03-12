@@ -3,3 +3,10 @@ Content-Type: application/json; charset=UTF-8
 
 ###
 
+# go pprof
+GET http://localhost:8888/debug/pprof
+###
+
+GET http://localhost:8888/debug/pprof/goroutine?debug=2
+
+###
