@@ -1,0 +1,9 @@
+env: dev
+bind: :8888
+
+
+log:
+  prefix: demo
+  api: api.log
+  err: err.log
+  trace: trace.log

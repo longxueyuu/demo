@@ -1,0 +1,5 @@
+GET http://localhost:8888/api/demo?name=demo
+Content-Type: application/json; charset=UTF-8
+
+###
+

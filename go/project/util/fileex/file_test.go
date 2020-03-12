@@ -1,4 +1,4 @@
-package file
+package fileex
 
 import (
 	"encoding/json"
