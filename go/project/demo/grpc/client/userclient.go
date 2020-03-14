@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	address     = "demo://demo_authority/localhost:50051,localhost:50052"
+	address     = "demo://demo_authority/localhost:8888,localhost:50052"
 	defaultName = "user_client"
 )
 
@@ -30,7 +30,7 @@ func main() {
 		name = os.Args[1]
 	}
 	p := context.WithValue(context.Background(), "meta", "meta")
-	ctx, cancel := context.WithTimeout(p, time.Second)
+	ctx, cancel := context.WithTimeout(p, time.Minute)
 	defer cancel()
 	r, err := c.SayHello(ctx, &user.HelloRequest{Name: name})
 	if err != nil {

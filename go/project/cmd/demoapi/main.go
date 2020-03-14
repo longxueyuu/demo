@@ -3,21 +3,36 @@ package main
 import (
 	"flag"
 	"github.com/test/project/config"
+	"github.com/test/project/demo/grpc/handler"
+	user "github.com/test/project/demo/grpc/proto"
 	"github.com/test/project/env"
 	"github.com/test/project/util/fileex"
 	"github.com/test/project/util/logex"
+	"google.golang.org/grpc"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"path/filepath"
 	"runtime/trace"
+	"strings"
 )
 
 var (
 	confPath = flag.String("conf", "conf/dev/demo/demo.yml", "configuration file")
 	conf     config.Demo
 )
+
+func rootHandlerFunc(rpcServer *grpc.Server) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
+			log.Printf("rootHandlerFunc: info, host=%v path=%v", r.Host, r.URL.Path)
+			rpcServer.ServeHTTP(w, r)
+		} else {
+			http.DefaultServeMux.ServeHTTP(w, r)
+		}
+	})
+}
 
 func main() {
 	flag.Parse()
@@ -63,11 +78,15 @@ func main() {
 
 	// init biz/service
 
+	// init grpc server
+	rpcServer := grpc.NewServer()
+	user.RegisterGreeterServer(rpcServer, &handler.GreeterHandler{})
+
 	// init server
 	env.ApiLog.Printf("main: service initlized")
 	log.Printf("main: service initlized")
 
-	err = http.ListenAndServe(conf.Bind, nil)
+	err = http.ListenAndServe(conf.Bind, rootHandlerFunc(rpcServer))
 
 	env.ErrLog.Printf("main: server is down, err=%v", err)
 	log.Printf("main: server is down, err=%v", err)
