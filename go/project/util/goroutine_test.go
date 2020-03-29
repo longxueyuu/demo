@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"fmt"
@@ -32,4 +32,34 @@ func run(queue chan int) {
 	}
 
 	time.Sleep(time.Minute)
+}
+
+type field struct {
+	name string
+}
+
+func (p *field) print() {
+	fmt.Println(p.name)
+}
+
+func TestClosure(t *testing.T) {
+	data := []*field{{"one"}, {"two"}, {"three"}}
+
+	for _, v := range data {
+		go func() {
+			v.print()
+		}()
+	}
+
+	time.Sleep(3 * time.Second)
+}
+
+func TestClosure2(t *testing.T) {
+	data := []*field{{"one"}, {"two"}, {"three"}}
+
+	for _, v := range data {
+		go v.print()
+	}
+
+	time.Sleep(3 * time.Second)
 }

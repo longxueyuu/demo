@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"fmt"
@@ -25,8 +25,8 @@ func TestCloseChannel(t *testing.T) {
 func TestForRangeChannel(t *testing.T) {
 	var ch = make(chan int, 10)
 
-	ch<- 1
-	ch<- 2
+	ch <- 1
+	ch <- 2
 
 	fmt.Println("start")
 	//for v := range ch {
