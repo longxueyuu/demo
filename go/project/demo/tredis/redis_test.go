@@ -18,6 +18,50 @@ var (
 		})
 )
 
+func TestRedisLish(t *testing.T) {
+	ln := "list"
+	_, err := client.RPop(ln).Result()
+	if err != nil {
+		log.Printf("TestRedisLish: ln=%v err=%v", ln, err)
+	}
+
+	ln2 := "list2"
+	_, err = client.LPush(ln2, "e1").Result()
+	log.Printf("TestRedisLish: ln=%v err=%v", ln2, err)
+
+	x, err := client.RPop(ln2).Result()
+	log.Printf("TestRedisLish: ln=%v x=%v err=%v", ln2, x, err)
+	x, err = client.RPop(ln2).Result()
+	log.Printf("TestRedisLish: ln=%v x=%v err=%v", ln2, x, err)
+}
+
+func TestRedisZset(t *testing.T) {
+	z1 := redis.Z{
+		Score:  -1,
+		Member: "s1",
+	}
+	z2 := redis.Z{
+		Score:  0,
+		Member: "s2",
+	}
+
+	client.ZAdd("zsetkey", z1, z2)
+
+	// zset key: key不存在或者member不存在, 返回Redis.Nil
+	score, err := client.ZScore("zsetkey", "s3").Result()
+	if err != nil {
+		log.Printf("zset key: err=%v", err)
+	} else {
+		log.Printf("zset key: score=%v err=%v", score, err)
+	}
+
+	cnt, err := client.ZCard("ttt").Result()
+	log.Printf("TestRedisZset: cnt=%v err=%v", cnt, err)
+
+	zs, err := client.ZRange("zsetkey", 2, 4).Result()
+	log.Printf("TestRedisZset: zs=%v err=%v", zs, err)
+}
+
 func TestRedis(t *testing.T) {
 
 	err := client.SAdd("name", "li", "zhang").Err()
