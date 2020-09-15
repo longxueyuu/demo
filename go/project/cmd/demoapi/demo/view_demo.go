@@ -16,5 +16,5 @@ func HandleDemo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = httpex.JSONOK(w, httpex.P{"name": name})
+	_ = httpex.JSONOK(w, httpex.P{"name": name, "requestHeader": r.Header, "responseHeader": w.Header()})
 }
