@@ -25,8 +25,11 @@ func init() {
 		return
 	}
 
+	// extension
+	dbCli = dbCli.Set("gorm:query_option", "FOR UPDATE")
+
 	users := make([]*User, 0)
-	err = dbCli.Table(TableUser).Where("id > 0").Find(&users).Error
+	err = dbCli.Debug().Table(TableUser).Where("id > 0").Find(&users).Error
 	if err == gorm.ErrRecordNotFound || len(users) == 0 {
 		for i := 0; i < 5; i++ {
 			u := &User{
@@ -47,7 +50,7 @@ func init() {
 
 func TestInsertOnDuplicate(t *testing.T) {
 	users := make([]*User, 0)
-	err := dbCli.Table(TableUser).Where("id > 0").Find(&users).Error
+	err := dbCli.Debug().Table(TableUser).Where("id > 0").Find(&users).Error
 	if err != nil {
 		log.Printf("TestInsertOnDuplicate: query, err=%v", err)
 	}
@@ -59,13 +62,45 @@ func TestInsertOnDuplicate(t *testing.T) {
 	if len(users) > 0 {
 		u := users[0]
 		u.ID = 0
-		err := dbCli.Table(TableUser).Save(u).Error
+		err := dbCli.Debug().Table(TableUser).Save(u).Error
 		if isDuplicateKeyErr(err) {
 			log.Printf("TestInsertOnDuplicate: duplicate key, err=%v", err)
 			return
 		}
 
 		log.Printf("TestInsertOnDuplicate: save, err=%v", err)
+	}
+}
+
+func TestTxSelectForUpdate(t *testing.T) {
+	tx := dbCli.Debug().Begin()
+	users := make([]*User, 0)
+	err := tx.Debug().Table(TableUser).Where("id > 0").Find(&users).Error
+	if err != nil {
+		log.Printf("TestTxSelectForUpdate: query, err=%v", err)
+	}
+
+	for i, u := range users {
+		u.Name = "test"
+		err := tx.Debug().Table(TableUser).Save(u).Error
+		if err != nil {
+			log.Printf("TestTxSelectForUpdate: user[%v]: %v err=%v", i, u, err)
+			tx.Rollback()
+			break
+		}
+		log.Printf("TestTxSelectForUpdate: user[%v]: %v", i, u)
+	}
+	tx.Commit()
+}
+
+func TestFirstOrCreate(t *testing.T) {
+	u := User{
+		UID:  "u20",
+		Name: "test",
+	}
+	err := dbCli.Debug().Table(TableUser).FirstOrCreate(&u, "uid=?", u.UID).Error
+	if err != nil {
+		log.Printf("TestFirstOrCreate: query, err=%v", err)
 	}
 }
 
