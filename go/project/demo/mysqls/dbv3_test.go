@@ -31,6 +31,17 @@ func forUpdate(queryIn string) string {
 	return fmt.Sprintf("%s for update", queryIn)
 }
 
+func TestSelectCount(t *testing.T) {
+	x := "u1234"
+	u := Membership{}
+	count, err := cli.Collection("membership").Find("uid = ? and type = ? ", x, 0).Count()
+	if err != nil {
+		log.Printf("TestSelectCollate: count=%v err=%v", count, err)
+		return
+	}
+	log.Printf("TestSelectCollate: u=%v count=%v", u, count)
+}
+
 func TestSelectForUpdate(t *testing.T) {
 	uid := "u1235"
 	c, cf := context.WithTimeout(context.Background(), 10*time.Second)

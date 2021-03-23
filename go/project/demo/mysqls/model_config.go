@@ -1,6 +1,7 @@
 package mysqls
 
 import (
+	"database/sql"
 	"fmt"
 	"upper.io/db.v3/lib/sqlbuilder"
 	"upper.io/db.v3/mysql"
@@ -26,4 +27,8 @@ func (conf *MySQLConf) GenClient() (sqlbuilder.Database, error) {
 		return nil, err
 	}
 	return mysql.Open(dsn)
+}
+
+func (conf *MySQLConf) GenSqlDB() (*sql.DB, error) {
+	return sql.Open("mysql", conf.DSN())
 }
