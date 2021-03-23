@@ -15,3 +15,9 @@ func TestDecode(t *testing.T) {
 	}
 	fmt.Println(string(b))
 }
+
+func TestEncode(t *testing.T) {
+	a := "abc"
+	s := base64.StdEncoding.EncodeToString([]byte(a))
+	fmt.Println(s)
+}

@@ -18,6 +18,13 @@ var (
 		})
 )
 
+func TestRedisSet(t *testing.T) {
+	key := "set_not_exist"
+	client.Del(key)
+	ms, err := client.SMembers(key).Result()
+	log.Printf("test set not exist: ms=%v err=%v", ms, err)
+}
+
 func TestRedisLish(t *testing.T) {
 	ln := "list"
 	_, err := client.RPop(ln).Result()
@@ -41,7 +48,7 @@ func TestRedisZset(t *testing.T) {
 		Member: "s1",
 	}
 	z2 := redis.Z{
-		Score:  0,
+		Score:  10,
 		Member: "s2",
 	}
 
@@ -58,8 +65,9 @@ func TestRedisZset(t *testing.T) {
 	cnt, err := client.ZCard("ttt").Result()
 	log.Printf("TestRedisZset: cnt=%v err=%v", cnt, err)
 
-	zs, err := client.ZRange("zsetkey", 2, 4).Result()
-	log.Printf("TestRedisZset: zs=%v err=%v", zs, err)
+	// zset key: key不存在, ZRange返回[]
+	zs, err := client.ZRange("zsetkey", 100, 104).Result()
+	log.Printf("TestRedisZset: zrange zs=%v err=%v", zs, err)
 }
 
 func TestRedis(t *testing.T) {
