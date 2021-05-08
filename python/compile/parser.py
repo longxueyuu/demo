@@ -16,14 +16,15 @@ class Parser(object):
     def expr(self):
         """
             expr = expr or term | term
-            term = term and factor | factor
+            term = term and opnot | opnot
+            opnot = ! opnot | factor
             factor = number | ( expr )
 
             expr = term expr_r
             expr_r = or term expr_r | ε
 
-            term = factor term_r
-            term_r = and factor term_r | ε
+            term = opnot term_r
+            term_r = and opnot term_r | ε
 
         """
 
@@ -40,17 +41,26 @@ class Parser(object):
             self.expr_r()
 
     def term(self):
-        self.factor()
+        self.op_not()
         self.term_r()
 
     def term_r(self):
         token = self.tokenizer.lookahead()
         if token and token.value == "and":
             tz.match_token(self.tokenizer.lookahead())
-            self.factor()
+            self.op_not()
             self.post_suffix_expr += " and "
 
             self.term_r()
+
+    def op_not(self):
+        token = self.tokenizer.lookahead()
+        if token.value == "!":
+            tz.match_token(self.tokenizer.lookahead())
+            self.op_not()
+            self.post_suffix_expr += "!"
+        else:
+            self.factor()
 
     def factor(self):
         token = self.tokenizer.lookahead()
@@ -68,7 +78,7 @@ class Parser(object):
 
 
 if __name__ == "__main__":
-    s = "10 or ((40 or 50) or 60)"
+    s = "20 and (!(!20 and !!30) or 40)"
 
     tz = lexer.Tokenizer(s)
     parser = Parser(tz)

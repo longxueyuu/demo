@@ -5,6 +5,7 @@ TokenTypeBracketLeft = 1
 TokenTypeBracketRight = 2
 TokenTypeOpAnd = 3
 TokenTypeOpOr = 4
+TokenTypeOpNot = 5
 
 
 class CustomToken(object):
@@ -108,6 +109,9 @@ class Tokenizer(object):
                 t = CustomToken(4, or_str)
                 tokens.append(t)
                 i -= 1
+            elif x == '!':
+                t = CustomToken(TokenTypeOpNot, x)
+                tokens.append(t)
             else:
                 raise Exception("syntax err: x={}".format(x))
 
@@ -127,7 +131,7 @@ class Tokenizer(object):
 
 
 if __name__ == "__main__":
-    expr = "200 and 39 or 20 or 40"
+    expr = "200 and 39 or !20 or 40"
     tokenizer = Tokenizer(expr)
     for x in tokenizer:
         print(x)
