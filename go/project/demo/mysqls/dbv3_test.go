@@ -42,6 +42,20 @@ func TestSelectCount(t *testing.T) {
 	log.Printf("TestSelectCollate: u=%v count=%v", u, count)
 }
 
+func TestUpdateExpr(t *testing.T) {
+	k2v := map[string]interface{}{
+		"pay_type":    db.Raw("( `pay_type` & ? ) | ?", 13, 2),
+		"cute_avatar": "ca_test",
+	}
+
+	r, err := cli.Update("membership").Set(k2v).Where("uid = ?", "u1234").Exec()
+	if err != nil {
+		log.Printf("TestUpdateExpr: err=%v", err)
+		return
+	}
+	log.Printf("TestUpdateExpr: r=%v", r)
+}
+
 func TestSelectForUpdate(t *testing.T) {
 	uid := "u1235"
 	c, cf := context.WithTimeout(context.Background(), 10*time.Second)
