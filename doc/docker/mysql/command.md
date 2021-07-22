@@ -2,6 +2,11 @@
 
 `docker run --name mysql -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:5.7`
 
+`docker run --name mysql_metalock -v /Users/${user}/work/github/demo/doc/docker/mysql/conf:/etc/mysql/conf.d  -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d -p 3390:3306 -p 33060:33060  mysql:5.7`
+
+
+`docker run --name mysql5733_extern_store -v /Users/${user}/work/docker/mysql_data:/var/lib/mysql -p 3310:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:5.7.33`
+
 `docker run --name lxy-mysql-master -v /Users/yuulongxue/docker/data/mysql/cnf/master:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=lxy -d -p 3306:3306 -p 33060:33060  mysql:5.7`
 
 `docker run --name lxy-mysql-slave -v /Users/yuulongxue/docker/data/mysql/cnf/slave:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=lxy -d -p 3307:3306 -p 33061:33060  mysql:5.7`

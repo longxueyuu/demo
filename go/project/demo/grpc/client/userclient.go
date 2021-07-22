@@ -30,8 +30,8 @@ func main() {
 		name = os.Args[1]
 	}
 	p := context.WithValue(context.Background(), "meta", "meta")
-	ctx, cancel := context.WithTimeout(p, time.Minute)
-	defer cancel()
+	ctx, _ := context.WithTimeout(p, time.Second)
+	// defer cancel()
 	r, err := c.SayHello(ctx, &user.HelloRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v, meta=%v", err, ctx.Value("meta"))
