@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  mongodb-primary:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - 27017:27017
+    environment:
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=init
+      - MONGODB_REPLICA_SET_KEY=rs0key
+
+  mongodb-secondary:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - 27018:27018
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_PORT_NUMBER=27018
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=init
+      - MONGODB_REPLICA_SET_KEY=rs0key
+
+  mongodb-secondary2:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - 27019:27019
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_PORT_NUMBER=27019
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary2
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=init
+      - MONGODB_REPLICA_SET_KEY=rs0key
