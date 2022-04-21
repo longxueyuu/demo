@@ -21,7 +21,7 @@ public class JDKProxy implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		System.out.println("----before the method!----");
-		Object obj = method.invoke(target, args);
+		Object obj = method.invoke(this, args);
 		System.out.println("----after the method!----");
 		return obj;
 	}

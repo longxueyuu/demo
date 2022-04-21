@@ -4,7 +4,7 @@ public class TargetBean implements ITarget {
 
 	@Override
 	public String doAction() {
-		System.out.println("----执行业务方法----");
+		System.out.println("----鎵ц涓氬姟鏂规硶----");
 		return "success";
 	}
 
