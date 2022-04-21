@@ -1,0 +1,14 @@
+version: v1beta1
+plugins:
+  - name: go
+    out: gen
+    opt: paths=source_relative
+  - name: go-grpc   # go-grpc plugin
+#    remote: buf.build/library/plugins/go-grpc:v1.1.0-2 # remote plugin, not using local
+    out: gen
+    opt: paths=source_relative,require_unimplemented_servers=false # 相对路径引用
+  - name: grpc-gateway # grpc-gateway plugin
+    out: gen
+    opt: paths=source_relative # 相对路径引用
+  - name: openapiv2
+    out: gen/openapiv2

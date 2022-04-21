@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package gen;
+
+import "google/api/annotations.proto"; // buf.yaml -> dep
+import "google/api/httpbody.proto"; // buf.yaml -> dep
+
+option go_package = "github.com/test/project/gen";
+message HelloReq {
+  string message = 1;
+}
+
+message HelloResp {
+  string result = 1;
+}
+
+message SendReq {
+  User user = 1;
+  string op = 2;
+}
+
+message SendResp {
+  User user = 1;
+  string op = 2;
+}
+
+message User {
+  string uid = 1;
+  string name = 2;
+}
+
+message UserProfileReq {
+  string uid = 1;
+}
+
+service HelloService {
+  rpc Hello(HelloReq) returns (HelloResp) {
+    option (google.api.http) = {
+      get: "/gw/hello"
+    };
+  }
+
+  rpc GetUserProfile(UserProfileReq) returns (google.api.HttpBody) {
+    option (google.api.http) = {
+      get: "/gw/user"
+    };
+  }
+
+  rpc Send(SendReq) returns (SendResp) {
+    option (google.api.http) = {
+      post: "/gw/send"
+      body: "*"
+    };
+  }
+}
