@@ -18,7 +18,7 @@
 
         <lxy.version>0.0.2-SNAPSHOT</lxy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.0.9.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <compress-version>1.9</compress-version>
         <hadoop.version>2.7.3</hadoop.version>
         <storm.version>1.0.2</storm.version>
