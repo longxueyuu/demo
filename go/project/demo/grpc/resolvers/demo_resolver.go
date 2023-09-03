@@ -32,11 +32,11 @@ func (r *TestResolver) ResolveNow(resolver.ResolveNowOptions) {
 
 func (r *TestResolver) start() {
 	addrs := make([]resolver.Address, 0)
-	if r.target.Endpoint == "" {
+	if r.target.Endpoint() == "" {
 		return
 	}
 
-	raws := strings.Split(r.target.Endpoint, ",")
+	raws := strings.Split(r.target.Endpoint(), ",")
 	for _, x := range raws {
 		addrs = append(addrs, resolver.Address{Addr: x})
 	}

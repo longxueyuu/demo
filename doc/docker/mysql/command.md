@@ -1,6 +1,6 @@
 # mysql
 
-`docker run --name mysql -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:5.7`
+`docker run --name mysql_8029 -p 3390:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:8.0.29`
 
 `docker run --name mysql_metalock -v /Users/${user}/work/github/demo/doc/docker/mysql/conf:/etc/mysql/conf.d  -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d -p 3390:3306 -p 33060:33060  mysql:5.7`
 

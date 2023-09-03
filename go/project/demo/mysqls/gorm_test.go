@@ -35,8 +35,8 @@ func init() {
 			u := &User{
 				UID:   "u" + strconv.Itoa(i),
 				Name:  "trump" + strconv.Itoa(i),
-				CTime: time.Now().Unix(),
-				MTime: time.Now().Unix(),
+				CTime: time.Now(),
+				MTime: time.Now(),
 			}
 			dbCli.Table(TableUser).Save(u)
 		}

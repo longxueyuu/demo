@@ -25,6 +25,25 @@ func TestRedisSet(t *testing.T) {
 	log.Printf("test set not exist: ms=%v err=%v", ms, err)
 }
 
+func TestHashKey(t *testing.T) {
+	key := "test_hash"
+	v, err := client.HGet(key, "uid").Int()
+	// key不存在，返回redis.nil
+	log.Printf("GetNonExistKey: v=%v err=%v", v, err)
+
+	key2 := "test_hash_2"
+	client.HSet(key2, "name", 1).Err()
+	log.Printf("init: err=%v", v)
+
+	v, err = client.HGet(key2, "uid").Int()
+	// key不存在，返回redis.nil
+	log.Printf("GetExistKey: v=%v err=%v", v, err)
+
+	vs, err := client.HMGet("dadafdad", "aa", "bb").Result()
+	// key不存在，返回redis.nil
+	log.Printf("GetExistKey: vs=%v err=%v", vs, err)
+}
+
 func TestRedisLish(t *testing.T) {
 	ln := "list"
 	_, err := client.RPop(ln).Result()
@@ -40,6 +59,9 @@ func TestRedisLish(t *testing.T) {
 	log.Printf("TestRedisLish: ln=%v x=%v err=%v", ln2, x, err)
 	x, err = client.RPop(ln2).Result()
 	log.Printf("TestRedisLish: ln=%v x=%v err=%v", ln2, x, err)
+
+	ss, err := client.LRange("11220", 0, 0).Result()
+	log.Printf("TestRedisLRange: ss=%v err=%v", ss, err)
 }
 
 func TestRedisZset(t *testing.T) {

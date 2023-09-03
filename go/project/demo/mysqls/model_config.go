@@ -15,14 +15,25 @@ type MySQLConf struct {
 	Password string `yaml:"password"`
 }
 
-func (conf MySQLConf) DSN() string {
+func (conf MySQLConf) DSN(readTimeOut int64) string {
+	if readTimeOut <= 0 {
+		readTimeOut = 20
+	}
 	return fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true&loc=Local",
-		conf.User, conf.Password, conf.Host, conf.Port, conf.DB)
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true&loc=Local&timeout=5s&readTimeout=%vms",
+		conf.User, conf.Password, conf.Host, conf.Port, conf.DB, readTimeOut)
 }
 
 func (conf *MySQLConf) GenClient() (sqlbuilder.Database, error) {
-	dsn, err := mysql.ParseURL(conf.DSN())
+	dsn, err := mysql.ParseURL(conf.DSN(5000))
+	if err != nil {
+		return nil, err
+	}
+	return mysql.Open(dsn)
+}
+
+func (conf *MySQLConf) GenClient2(readTimeout int64) (sqlbuilder.Database, error) {
+	dsn, err := mysql.ParseURL(conf.DSN(readTimeout))
 	if err != nil {
 		return nil, err
 	}
@@ -30,5 +41,5 @@ func (conf *MySQLConf) GenClient() (sqlbuilder.Database, error) {
 }
 
 func (conf *MySQLConf) GenSqlDB() (*sql.DB, error) {
-	return sql.Open("mysql", conf.DSN())
+	return sql.Open("mysql", conf.DSN(0))
 }

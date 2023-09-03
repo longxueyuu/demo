@@ -31,3 +31,24 @@ func TestPointerPrint(t *testing.T) {
 	}{Key: "this is the value"}
 	log.Printf("v=%v s=%s", a, a)
 }
+
+type St struct {
+}
+
+func TestNilAddr(t *testing.T) {
+	var s *St
+	log.Printf("nil var, s=%p", &s)
+
+	size := 0
+
+	data := make([]byte, size)
+
+	bs := data[:size]
+	log.Printf("bs=%v", bs)
+	printBs(bs)
+}
+
+func printBs(data []byte) {
+	i := len(data)
+	_ = i
+}

@@ -1,5 +1,7 @@
 package mysqls
 
+import "time"
+
 const (
 	TableUser                  = "user"
 	MysqlDuplicateKeyErrNumber = 1062
@@ -10,8 +12,15 @@ type User struct {
 	UID  string `db:"uid" gorm:"column:uid"`
 	Name string `db:"name" gorm:"column:name"`
 
-	CTime int64 `db:"ctime" gorm:"column:ctime"`
-	MTime int64 `db:"mtime" gorm:"column:mtime"`
+	Extra *Extra
+
+	CTime time.Time `db:"ctime" gorm:"column:ctime"`
+	MTime time.Time `db:"mtime" gorm:"column:mtime"`
+}
+
+type Extra struct {
+	Age         int64  `db:"age"`
+	Description string `db:"description"`
 }
 
 type Membership struct {
@@ -21,4 +30,8 @@ type Membership struct {
 
 	CTime int64 `db:"ctime" gorm:"column:ctime"`
 	MTime int64 `db:"mtime" gorm:"column:mtime"`
+}
+
+type Wallet struct {
+	Id int64 `db:"id" json:"-"`
 }

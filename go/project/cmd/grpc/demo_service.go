@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	pb "github.com/test/project/proto/gen"
+	pb "github.com/test/project/proto/gen/demo"
 )
 
 var (

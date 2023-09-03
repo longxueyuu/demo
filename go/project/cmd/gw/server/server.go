@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/test/project/cmd/gw/view"
-	pb "github.com/test/project/proto/gen"
+	pb "github.com/test/project/proto/gen/demo"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 	"log"

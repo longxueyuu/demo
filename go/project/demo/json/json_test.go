@@ -4,12 +4,43 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"testing"
 )
 
 type Item struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+}
+
+func (d *Item) UnmarshalJSON(data []byte) error {
+	if id, ok := ParseID(data); ok {
+		d.ID = id
+		return nil
+	}
+
+	type dispute Item
+	var v Item
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	*d = Item(v)
+	return nil
+}
+
+func ParseID(data []byte) (string, bool) {
+	s := string(data)
+
+	if !strings.HasPrefix(s, "\"") {
+		return "", false
+	}
+
+	if !strings.HasSuffix(s, "\"") {
+		return "", false
+	}
+
+	return s[1 : len(s)-1], true
 }
 
 func TestJSONUnMarshall(t *testing.T) {

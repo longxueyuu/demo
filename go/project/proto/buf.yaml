@@ -1,4 +1,4 @@
-version: v1beta1
+version: v1
 breaking:
   use:
     - FILE
@@ -9,6 +9,6 @@ lint:
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/grpc-ecosystem/grpc-gateway
+
 build:
-  roots:
-    - proto # proto的目录
+  excludes: []

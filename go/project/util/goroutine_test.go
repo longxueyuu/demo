@@ -2,6 +2,8 @@ package util
 
 import (
 	"fmt"
+	"runtime"
+	"sync"
 	"testing"
 	"time"
 )
@@ -62,4 +64,47 @@ func TestClosure2(t *testing.T) {
 	}
 
 	time.Sleep(3 * time.Second)
+}
+
+func BenchmarkPanic(b *testing.B) {
+	b.ReportAllocs()
+	var n int64 = 5
+	var i int64
+	var sum int64
+	wg := sync.WaitGroup{}
+	wg.Add(int(n))
+	for ; i < n; i++ {
+		go func() {
+			wg.Done()
+			for {
+				sum++
+				time.Sleep(100 * time.Microsecond)
+			}
+		}()
+	}
+	wg.Wait()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		f(func() {
+			panic("test")
+		})
+	}
+}
+
+func f(fn func()) {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				var buf [1 << 10]byte
+				runtime.Stack(buf[:], true)
+				//log.Println("executor", err, string(buf[:]))
+			}
+			wg.Done()
+		}()
+		fn()
+	}()
+	wg.Wait()
 }
